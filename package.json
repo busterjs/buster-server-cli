@@ -1,0 +1,34 @@
+{
+    "name": "buster-server-cli",
+    "version": "0.1.0",
+    "description": "buster-server CLI library",
+    "homepage": "http://busterjs.org/docs/buster-server-cli",
+    "author": { "name": "August Lilleaas and Christian Johansen" },
+    "contributors": [{
+        "name": "August Lilleaas",
+        "email": "august.lilleaas@gmail.com",
+        "url": "http://augustl.com"
+    }, {
+        "name": "Christian Johansen",
+        "email": "christian@cjohansen.no",
+        "url": "http://cjohansen.no"
+    }],
+    "main": "./lib/server-cli",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/busterjs/buster-server-cli.git"
+    },
+    "dependencies": {
+        "buster-core": ">=0.6.1",
+        "buster-cli": ">=0.4.2",
+        "buster-capture-server": ">=0.4.2",
+        "buster-args": ">=0.3.1",
+        "buster-user-agent-parser": ">=0.3.0",
+        "buster-resources": ">=0.3",
+        "paperboy": "~0",
+        "ejs": "~0.4"
+    },
+    "devDependencies": {
+        "buster": "*"
+    }
+}
