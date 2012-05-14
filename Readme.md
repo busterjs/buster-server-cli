@@ -26,7 +26,7 @@ fictional `checkit` test framework.
     var serverCli = require("buster-server-cli");
 
     serverCli.create(process.stdout, process.stderr, {
-        missionStatement: "Checkit crazy multi-browser test runner server,
+        missionStatement: "Checkit crazy multi-browser test runner server",
         description: "checkit-server [options]",
         templateRoot: path.join(__dirname, "..", "views"),
         documentRoot: path.join(__dirname, "..", "public")
