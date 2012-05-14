@@ -40,7 +40,7 @@ index page of the server. [Buster's index template](https://github.com/busterjs/
 renders a list of captured browsers and a link to `/capture`, which is the
 URL that causes the browser to become a captured slave.
 
-The `index.ejs` template is rendered with one piece of data - `slaves` - which
+The `index.ejs` template is rendered with one piece of data — `slaves` — which
 is an array of slave objects:
 
 * `slave.browser` A string, i.e. "Firefox"
