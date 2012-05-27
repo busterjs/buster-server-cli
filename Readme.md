@@ -1,6 +1,6 @@
 # buster-server-cli #
 
-[![Build status](https://secure.travis-ci.org/busterjs/buster-evented-logger.png?branch=master)](http://travis-ci.org/busterjs/buster-evented-logger)
+[![Build status](https://secure.travis-ci.org/busterjs/buster-server-cli.png?branch=master)](http://travis-ci.org/busterjs/buster-server-cli)
 
 Command-line interface API for running [buster-capture-server](https://github.com/busterjs/buster-capture-server/)
 instances with a simple interface that allows capturing and viewing a list of
