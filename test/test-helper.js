@@ -1,4 +1,5 @@
 var http = require("http");
+var bCapServ = require("buster-capture-server");
 
 var helper = module.exports = {
     run: function (tc, args, callback) {
@@ -25,7 +26,7 @@ var helper = module.exports = {
         http.request({
             method: method.toUpperCase(),
             host: this.host || "localhost",
-            port: this.port || 9999,
+            port: this.getPort(),
             path: url,
             headers: headers
         }, function (res) {
@@ -33,6 +34,10 @@ var helper = module.exports = {
             res.on("data", function (chunk) { body += chunk; });
             res.on("end", function () { callback(res, body); });
         }).end();
+    },
+
+    getPort: function () {
+        return this.port || 9999;
     },
 
     get: function (url, headers, callback) {
@@ -44,13 +49,6 @@ var helper = module.exports = {
     },
 
     captureSlave: function (ua, callback) {
-        this.get("/capture", { "User-Agent": ua }, function (res, body) {
-            var uid = res.headers.location.split("/").pop();
-            var url = "/clients/" + uid + "/createMulticast";
-
-            this.post(url, { "User-Agent": ua }, function (res, body) {
-                callback();
-            }.bind(this));
-        }.bind(this));
+        bCapServ.testHelper.captureSlave(this.getPort(), ua).then(callback);
     }
 };
