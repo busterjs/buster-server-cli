@@ -22,7 +22,6 @@
         "buster-core": ">=0.6.1",
         "buster-cli": ">=0.4.2",
         "buster-capture-server": ">=0.4.2",
-        "buster-args": ">=0.3.1",
         "buster-user-agent-parser": ">=0.3.0",
         "buster-resources": ">=0.3",
         "paperboy": "~0",
