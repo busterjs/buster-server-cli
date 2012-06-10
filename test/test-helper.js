@@ -1,5 +1,4 @@
 var http = require("http");
-var cliHelper = require("buster-cli/lib/test-helper");
 
 var helper = module.exports = {
     run: function (tc, args, callback) {
