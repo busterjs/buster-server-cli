@@ -23,7 +23,7 @@
         "buster-cli": ">=0.4.2",
         "buster-capture-server": ">=0.4.2",
         "buster-user-agent-parser": ">=0.3.0",
-        "buster-resources": ">=0.3",
+        "ramp-resources": ">=0.1",
         "paperboy": "~0",
         "ejs": "~0.4"
     },
