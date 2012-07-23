@@ -13,7 +13,7 @@ buster.testCase("buster-server binary", {
         this.stderr = cliHelper.writableStream("stderr");
         this.cli = serverCli.create(this.stdout, this.stderr, {
             missionStatement: "Server for automating",
-            name: "buster-server"
+            binary: "buster-server"
         });
     },
 

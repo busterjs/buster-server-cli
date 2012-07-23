@@ -8,13 +8,13 @@
   </head>
   <body>
     <div id="masthead">
-      <p><a href="/">Buster.<span>JS</span></a> Test automator</p>
+      <p><a href="/"><%= name %></a> Test automator</p>
     </div>
     <div class="content">
       <h1>Capture browser as test slave</h1>
       <p>
-        Hit the button below, then leave the browser running. Buster can then use
-        it to automate test runs for you.
+        Hit the button below, then leave the browser running. <%= name %> can
+        then use it to automate test runs for you.
       </p>
       <p class="button"><a href="/capture">Capture browser</a></p>
       <% if (slaves.length > 0) { %>
