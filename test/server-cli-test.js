@@ -12,7 +12,8 @@ buster.testCase("buster-server binary", {
         this.stdout = cliHelper.writableStream("stdout");
         this.stderr = cliHelper.writableStream("stderr");
         this.cli = serverCli.create(this.stdout, this.stderr, {
-            missionStatement: "Server for automating"
+            missionStatement: "Server for automating",
+            name: "buster-server"
         });
     },
 
