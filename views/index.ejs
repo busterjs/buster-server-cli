@@ -31,8 +31,12 @@
 
             <li class="<%= css_classes.join(' ') %>">
               <div>
-                <h3><%= agent.browser %> <%= agent.version %> | <%= agent.os %></h3>
-                <p><%= agent.userAgent %></p>
+                <div>
+                  <div>
+                    <h3><%= agent.browser %> <%= agent.version %> | <%= agent.os %></h3>
+                    <p><%= agent.userAgent %></p>
+                  </div>
+                </div>
               </div>
             </li>
           <% } %>
