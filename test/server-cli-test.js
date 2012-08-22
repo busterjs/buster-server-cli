@@ -89,6 +89,36 @@ buster.testCase("buster-server binary", {
                 assert.calledOnce(createServer);
                 assert.calledWithExactly(createServer, 1111, undefined);
             }));
+        },
+
+        "calls the function for capturing a headless browser if -c was passed": function(done) {
+            var createServer            = this.stub(this.cli, "createServer");
+            var captureHeadlessBrowser  = this.stub(this.cli, "captureHeadlessBrowser");
+
+            helper.run(this, ['-c'], done(function () {
+                assert.calledOnce(captureHeadlessBrowser);
+                assert.calledWithExactly(captureHeadlessBrowser, 'http://localhost:1111');
+            }));
+        },
+
+        "calls the function for capturing a headless browser if --capture-headless was passed": function(done) {
+            var createServer            = this.stub(this.cli, "createServer");
+            var captureHeadlessBrowser  = this.stub(this.cli, "captureHeadlessBrowser");
+
+            helper.run(this, ['--capture-headless'], done(function () {
+                assert.calledOnce(captureHeadlessBrowser);
+                assert.calledWithExactly(captureHeadlessBrowser, 'http://localhost:1111');
+            }));
+        },
+
+        "creates a phantom session if relevant parameter was passed": function(done) {
+            var createServer  = this.stub(this.cli, "createServer");
+            var createPhantom = this.stub(this.cli.phantom, 'create');
+
+            helper.run(this, ['-c'], done(function() {
+                assert.calledOnce(createPhantom);
+            }))
+
         }
     },
 
