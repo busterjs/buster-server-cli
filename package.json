@@ -29,5 +29,8 @@
     },
     "devDependencies": {
         "buster": "*"
+    },
+    "scripts": {
+        "test": "node test/server-cli-test.js"
     }
 }
