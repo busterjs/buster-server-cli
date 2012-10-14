@@ -75,7 +75,8 @@ buster.testCase("buster-server binary", {
                               "port with -p/--port to start buster-server");
             }.bind(this)));
 
-            server.emit("error", new Error("EADDRINUSE, Address already in use"));
+            var error = new Error("EADDRINUSE, Address already in use");
+            server.emit("error", error);
         },
 
         "binds to specified address": function (done) {
@@ -111,7 +112,8 @@ buster.testCase("buster-server binary", {
         "redirects client when capturing": function (done) {
             helper.get("/capture", done(function (res, body) {
                 assert.equals(res.statusCode, 302);
-                assert.match(res.headers.location, /\/slaves\/[0-9a-z\-]+\/browser$/);
+                assert.match(res.headers.location,
+                             /\/slaves\/[0-9a-z\-]+\/browser$/);
             }));
         },
 
@@ -162,7 +164,8 @@ buster.testCase("buster-server binary", {
                 helper.get("/", done(function (res, body) {
                     slave.teardown();
                     assert.match(body, "<li class=\"firefox linux\">");
-                    assert.match(body, "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
+                    assert.match(body,
+                                 "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                 }));
             });
         },
@@ -173,7 +176,8 @@ buster.testCase("buster-server binary", {
                     helper.get("/", done(function (res, body) {
                         slave.teardown();
                         assert.match(body, "<li class=\"firefox linux\">");
-                        assert.match(body, "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
+                        assert.match(body,
+                                     "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                     }));
                 });
             }.bind(this));
