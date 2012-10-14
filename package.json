@@ -18,6 +18,9 @@
         "type": "git",
         "url": "https://github.com/busterjs/buster-server-cli.git"
     },
+    "scripts": {
+        "test": "node run-tests.js"
+    },
     "dependencies": {
         "buster-cli": ">=0.6.0",
         "buster-capture-server": ">=0.6.0",

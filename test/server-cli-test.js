@@ -98,6 +98,8 @@ buster.testCase("buster-server binary", {
     "createServer": {
         setUp: function (done) {
             this.server = this.cli.createServer(9999);
+            this.ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) " +
+                "Gecko/20100101 Firefox/4.0.1";
             done();
         },
 
@@ -114,9 +116,10 @@ buster.testCase("buster-server binary", {
         },
 
         "serves header when captured": function (done) {
-            helper.get("/capture", function (res, body) {
-                var headerUrl = res.headers.location.replace("/browser", "/header");
-                helper.get(headerUrl, done(function (res, body) {
+            helper.captureSlave(this.ua, function (e) {
+                var url = e.e.slave.prisonPath.replace("/browser", "/header");
+                helper.get(url, done(function (res, body) {
+                    e.teardown();
                     assert.equals(res.statusCode, 200);
                     assert.match(body, "test slave");
                 }));
@@ -145,8 +148,9 @@ buster.testCase("buster-server binary", {
         },
 
         "reports connected slaves": function (done) {
-            helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+            helper.captureSlave(this.ua, function (slave) {
                 helper.get("/", done(function (res, body) {
+                    slave.teardown();
                     assert.equals(res.statusCode, 200);
                     assert.match(body, "<h2>Captured slaves (1)</h2>");
                 }));
@@ -154,24 +158,25 @@ buster.testCase("buster-server binary", {
         },
 
         "reports name of connected clients": function (done) {
-            helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+            helper.captureSlave(this.ua, function (slave) {
                 helper.get("/", done(function (res, body) {
+                    slave.teardown();
                     assert.match(body, "<li class=\"firefox linux\">");
-                    assert.match(body, "<h3>Firefox 4.0.1 | Linux</h3>");
+                    assert.match(body, "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                 }));
             });
         },
 
         "reports name newly connected ones": function (done) {
-            var self = this;
             helper.get("/", function (res, body) {
-                helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+                helper.captureSlave(this.ua, function (slave) {
                     helper.get("/", done(function (res, body) {
+                        slave.teardown();
                         assert.match(body, "<li class=\"firefox linux\">");
-                        assert.match(body, "<h3>Firefox 4.0.1 | Linux</h3>");
+                        assert.match(body, "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                     }));
                 });
-            });
+            }.bind(this));
         }
     }
 });
