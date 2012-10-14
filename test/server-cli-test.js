@@ -1,7 +1,10 @@
 var helper = require("./test-helper").requestHelperFor("localhost", "9999");
 var cliHelper = require("buster-cli/lib/test-helper");
 var http = require("http");
-var buster = require("buster");
+var bane = require("bane");
+var buster = require("buster-node");
+var assert = buster.assert;
+var refute = buster.refute;
 var serverCli = require("../lib/server-cli");
 var testServer = require("../lib/middleware");
 var run = helper.runTest;
@@ -62,7 +65,7 @@ buster.testCase("buster-server binary", {
         },
 
         "prints message if address is already in use (async)": function (done) {
-            var server = buster.eventEmitter.create();
+            var server = bane.createEventEmitter();
             server.listen = this.spy();
             this.stub(http, "createServer").returns(server);
             this.stub(testServer, "create");
@@ -160,6 +163,7 @@ buster.testCase("buster-server binary", {
         },
 
         "reports name newly connected ones": function (done) {
+            var self = this;
             helper.get("/", function (res, body) {
                 helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
                     helper.get("/", done(function (res, body) {
