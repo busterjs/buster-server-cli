@@ -1,5 +1,5 @@
 var http = require("http");
-var bCapServ = require("ramp-capture-server");
+var ramp = require("ramp");
 
 var helper = module.exports = {
     run: function (tc, args, callback) {
@@ -49,6 +49,6 @@ var helper = module.exports = {
     },
 
     captureSlave: function (ua, callback) {
-        bCapServ.testHelper.captureSlave(this.getPort(), ua).then(callback);
+        ramp.testHelper.captureSlave(this.getPort(), ua).then(callback);
     }
 };
