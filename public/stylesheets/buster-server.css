@@ -80,6 +80,9 @@ h2 {
 }
 
 .browsers li > div {
+    padding-left: 85px;
+    margin-left: 0;
+    min-height: 64px;
     background: url(../images/linux-64.png) no-repeat;
 }
 

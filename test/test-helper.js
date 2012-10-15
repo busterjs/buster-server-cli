@@ -18,7 +18,7 @@ var helper = module.exports = {
     },
 
     request: function (method, url, headers, callback) {
-        if (typeof headers == "function") {
+        if (typeof headers === "function") {
             callback = headers;
             headers = {};
         }

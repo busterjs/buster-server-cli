@@ -1,7 +1,10 @@
 var helper = require("./test-helper").requestHelperFor("localhost", "9999");
 var cliHelper = require("buster-cli/lib/test-helper");
 var http = require("http");
-var buster = require("buster");
+var bane = require("bane");
+var buster = require("buster-node");
+var assert = buster.assert;
+var refute = buster.refute;
 var serverCli = require("../lib/server-cli");
 var testServer = require("../lib/middleware");
 var run = helper.runTest;
@@ -62,7 +65,7 @@ buster.testCase("buster-server binary", {
         },
 
         "prints message if address is already in use (async)": function (done) {
-            var server = buster.eventEmitter.create();
+            var server = bane.createEventEmitter();
             server.listen = this.spy();
             this.stub(http, "createServer").returns(server);
             this.stub(testServer, "create");
@@ -72,7 +75,8 @@ buster.testCase("buster-server binary", {
                               "port with -p/--port to start buster-server");
             }.bind(this)));
 
-            server.emit("error", new Error("EADDRINUSE, Address already in use"));
+            var error = new Error("EADDRINUSE, Address already in use");
+            server.emit("error", error);
         },
 
         "binds to specified address": function (done) {
@@ -125,6 +129,8 @@ buster.testCase("buster-server binary", {
     "createServer": {
         setUp: function (done) {
             this.server = this.cli.createServer(9999);
+            this.ua = "Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) " +
+                "Gecko/20100101 Firefox/4.0.1";
             done();
         },
 
@@ -136,14 +142,16 @@ buster.testCase("buster-server binary", {
         "redirects client when capturing": function (done) {
             helper.get("/capture", done(function (res, body) {
                 assert.equals(res.statusCode, 302);
-                assert.match(res.headers.location, /\/slaves\/[0-9a-z\-]+\/browser$/);
+                assert.match(res.headers.location,
+                             /\/slaves\/[0-9a-z\-]+\/browser$/);
             }));
         },
 
         "serves header when captured": function (done) {
-            helper.get("/capture", function (res, body) {
-                var headerUrl = res.headers.location.replace("/browser", "/header");
-                helper.get(headerUrl, done(function (res, body) {
+            helper.captureSlave(this.ua, function (e) {
+                var url = e.e.slave.prisonPath.replace("/browser", "/header");
+                helper.get(url, done(function (res, body) {
+                    e.teardown();
                     assert.equals(res.statusCode, 200);
                     assert.match(body, "test slave");
                 }));
@@ -172,8 +180,9 @@ buster.testCase("buster-server binary", {
         },
 
         "reports connected slaves": function (done) {
-            helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+            helper.captureSlave(this.ua, function (slave) {
                 helper.get("/", done(function (res, body) {
+                    slave.teardown();
                     assert.equals(res.statusCode, 200);
                     assert.match(body, "<h2>Captured slaves (1)</h2>");
                 }));
@@ -181,23 +190,27 @@ buster.testCase("buster-server binary", {
         },
 
         "reports name of connected clients": function (done) {
-            helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+            helper.captureSlave(this.ua, function (slave) {
                 helper.get("/", done(function (res, body) {
+                    slave.teardown();
                     assert.match(body, "<li class=\"firefox linux\">");
-                    assert.match(body, "<h3>Firefox 4.0.1 | Linux</h3>");
+                    assert.match(body,
+                                 "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                 }));
             });
         },
 
         "reports name newly connected ones": function (done) {
             helper.get("/", function (res, body) {
-                helper.captureSlave("Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20100101 Firefox/4.0.1", function () {
+                helper.captureSlave(this.ua, function (slave) {
                     helper.get("/", done(function (res, body) {
+                        slave.teardown();
                         assert.match(body, "<li class=\"firefox linux\">");
-                        assert.match(body, "<h3>Firefox 4.0.1 | Linux</h3>");
+                        assert.match(body,
+                                     "<h3>Firefox 4.0.1 on Linux 64-bit</h3>");
                     }));
                 });
-            });
+            }.bind(this));
         }
     }
 });

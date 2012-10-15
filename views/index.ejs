@@ -22,21 +22,22 @@
         <ol class="browsers">
           <% for (var i = 0, l = slaves.length; i < l; ++i) { %>
             <%
-              var agent       = slaves[i]
-                , css_classes = []
+              var agent = slaves[i], classes = [];
 
-              css_classes.push(/internet explorer/i.test(agent.browser) ? 'ie' : agent.browser.toLowerCase())
-              css_classes.push(agent.platform.toLowerCase().replace(/\s/g, '_'))
+              classes.push(agent.name.toLowerCase());
+              if (/windows/i.test(agent.os.family)) {
+                  classes.push("windows");
+              } else if (/os x/i.test(agent.os.family)) {
+                  classes.push("os_x");
+              } else {
+                  classes.push(agent.os.family.toLowerCase().replace(/ /g, "_"));
+              }
             %>
 
-            <li class="<%= css_classes.join(' ') %>">
+            <li class="<%= classes.join(' ') %>">
               <div>
-                <div>
-                  <div>
-                    <h3><%= agent.browser %> <%= agent.version %> | <%= agent.os %></h3>
-                    <p><%= agent.userAgent %></p>
-                  </div>
-                </div>
+                <h3><%= agent.description %></h3>
+                <p><%= agent.ua %></p>
               </div>
             </li>
           <% } %>
