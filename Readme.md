@@ -2,7 +2,7 @@
 
 [![Build status](https://secure.travis-ci.org/busterjs/buster-server-cli.png?branch=master)](http://travis-ci.org/busterjs/buster-server-cli)
 
-Command-line interface API for running [buster-capture-server](https://github.com/busterjs/buster-capture-server/)
+Command-line interface API for running [ramp-capture-server](https://github.com/busterjs/ramp-capture-server/)
 instances with a simple interface that allows capturing and viewing a list of
 connected browsers.
 

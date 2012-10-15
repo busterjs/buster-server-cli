@@ -1,5 +1,5 @@
 var http = require("http");
-var bCapServ = require("buster-capture-server");
+var bCapServ = require("ramp-capture-server");
 
 var helper = module.exports = {
     run: function (tc, args, callback) {

@@ -21,7 +21,7 @@
     "dependencies": {
         "buster-core": ">=0.6.2",
         "buster-cli": ">=0.5.0",
-        "buster-capture-server": ">=0.5.0",
+        "ramp-capture-server": "~0.6",
         "buster-user-agent-parser": ">=0.3.1",
         "ramp-resources": ">=0.4",
         "paperboy": "~0",
