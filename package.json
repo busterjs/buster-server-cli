@@ -25,7 +25,8 @@
         "ramp-resources": ">=0.5",
         "paperboy": "~0",
         "ejs": "~0.4",
-        "phantom": "~0.3.5"
+        "phantom": "~0.3.5",
+        "platform": "~1.0.0"
     },
     "devDependencies": {
         "buster": "*"
