@@ -25,7 +25,7 @@
         "ramp-resources": ">=0.5",
         "paperboy": "~0",
         "ejs": "~0.4",
-        "phantom": "~0.3.5"
+        "phantom-proxy": "~0.1.78"
     },
     "devDependencies": {
         "buster": "0.6.11"
