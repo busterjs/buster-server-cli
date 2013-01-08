@@ -79,6 +79,11 @@ h2 {
     background-image: url(../images/safari-mobile-64.png);
 }
 
+.browsers .phantomjs {
+    background-image: url(../images/phantomjs-64.png);
+    background-position: 15px 24px;
+}
+
 .browsers li > div {
     padding-left: 85px;
     margin-left: 0;
