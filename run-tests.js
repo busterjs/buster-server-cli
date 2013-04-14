@@ -1,11 +1,15 @@
 var buster = require("buster-node");
 
 buster.testRunner.onCreate(function (runner) {
+    buster.referee.on("pass", runner.assertionPass.bind(runner));
+
     runner.on("suite:end", function (results) {
-        process.nextTick(function () {
+        setTimeout(function () {
             process.exit(results.ok ? 0 : 1);
-        });
+        }, 50);
     });
 });
+
+buster.testContext.on("create", buster.autoRun());
 
 require("./test/server-cli-test");

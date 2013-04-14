@@ -18,6 +18,9 @@
         "type": "git",
         "url": "https://github.com/busterjs/buster-server-cli.git"
     },
+    "scripts": {
+        "test": "node run-tests.js"
+    },
     "dependencies": {
         "buster-cli": ">=0.5.0",
         "ramp": "~0.6",
@@ -28,6 +31,6 @@
         "phantom-proxy": "~0.1.78"
     },
     "devDependencies": {
-        "buster": "0.6.11"
+        "buster-node": "0.1"
     }
 }
