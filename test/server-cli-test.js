@@ -138,18 +138,9 @@ buster.testCase("buster-server binary", {
             this.server.close();
         },
 
-        "redirects client when capturing": function (done) {
-            helper.get("/capture", done(function (res, body) {
-                assert.equals(res.statusCode, 302);
-                assert.match(res.headers.location,
-                             /\/slaves\/[0-9a-z\-]+\/browser$/);
-            }));
-        },
-
         "serves header when captured": function (done) {
             helper.captureSlave(this.ua, function (e) {
-                var url = e.e.slave.prisonPath.replace("/browser", "/header");
-                helper.get(url, done(function (res, body) {
+                helper.get("/slave_header/", done(function (res, body) {
                     e.teardown();
                     assert.equals(res.statusCode, 200);
                     assert.match(body, "test slave");

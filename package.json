@@ -1,6 +1,6 @@
 {
     "name": "buster-server-cli",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "buster-server CLI library",
     "homepage": "http://busterjs.org/docs/buster-server-cli",
     "author": { "name": "August Lilleaas and Christian Johansen" },
@@ -23,7 +23,7 @@
     },
     "dependencies": {
         "buster-cli": ">=0.5.0",
-        "ramp": "~0.6",
+        "ramp": "~0.7",
         "platform": ">=1.0.0",
         "ramp-resources": ">=0.5",
         "paperboy": "~0",
