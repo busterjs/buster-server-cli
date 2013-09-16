@@ -22,10 +22,10 @@
         "test": "node run-tests.js"
     },
     "dependencies": {
-        "buster-cli": ">=0.5.0",
-        "ramp": "~0.7",
+        "buster-cli": "~0.6",
+        "ramp": "~1.0",
         "platform": ">=1.0.0",
-        "ramp-resources": ">=0.5",
+        "ramp-resources": "~1.0",
         "paperboy": "~0",
         "ejs": "~0.4",
         "phantom-proxy": "~0.1.78"
