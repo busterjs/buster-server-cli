@@ -31,6 +31,8 @@
         "phantom-proxy": "~0.1.78"
     },
     "devDependencies": {
-        "buster-node": "*"
+        "buster-node": "*",
+        "referee": "*",
+        "bane": "~1.0"
     }
 }
