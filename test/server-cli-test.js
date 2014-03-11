@@ -1,5 +1,5 @@
 var helper = require("./test-helper").requestHelperFor("localhost", "9999");
-var cliHelper = require("buster-cli/lib/test-helper");
+var cliHelper = require("buster-cli/test/test-helper");
 var http = require("http");
 var bane = require("bane");
 var buster = require("buster-node");
