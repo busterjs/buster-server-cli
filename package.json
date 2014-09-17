@@ -25,7 +25,7 @@
     "dependencies": {
         "buster-cli": "~0.6",
         "ramp": "~1.0",
-        "platform": ">=1.0.0",
+        "platform": "~1.2",
         "ramp-resources": "~1.0",
         "paperboy": "~0",
         "ejs": "~0.4",
