@@ -24,7 +24,7 @@
             <%
               var agent = slaves[i], classes = [];
 
-              classes.push(agent.name.toLowerCase());
+              classes.push((agent.name || '').toLowerCase());
               if (/windows/i.test(agent.os.family)) {
                   classes.push("windows");
               } else if (/os x/i.test(agent.os.family)) {
