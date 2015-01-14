@@ -1,3 +1,6 @@
+/* global require, process*/
+"use strict";
+
 var helper = require("./test-helper").requestHelperFor("localhost", "9999");
 var cliHelper = require("buster-cli/test/test-helper");
 var http = require("http");
@@ -7,7 +10,9 @@ var assert = buster.assert;
 var refute = buster.refute;
 var serverCli = require("../lib/server-cli");
 var testServer = require("../lib/middleware");
-var run = helper.runTest;
+var createServerFunc = function(port, binding, callback){
+    callback(null);
+};
 
 buster.testCase("buster-server binary", {
     setUp: function () {
@@ -40,7 +45,7 @@ buster.testCase("buster-server binary", {
         },
 
         "starts server on default port": function (done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             helper.run(this, [], done(function (err, server) {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 1111);
@@ -48,7 +53,7 @@ buster.testCase("buster-server binary", {
         },
 
         "starts server on specified port": function (done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             helper.run(this, ["-p", "3200"], done(function () {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 3200);
@@ -65,8 +70,11 @@ buster.testCase("buster-server binary", {
         },
 
         "prints message if address is already in use (async)": function (done) {
+            var error = new Error("EADDRINUSE, Address already in use");
             var server = bane.createEventEmitter();
-            server.listen = this.spy();
+            server.listen = this.spy(function(port, binding, callback){
+                callback(error);
+            });
             this.stub(http, "createServer").returns(server);
             this.stub(testServer, "create");
 
@@ -74,29 +82,26 @@ buster.testCase("buster-server binary", {
                 assert.stderr("Address already in use. Pick another " +
                               "port with -p/--port to start buster-server");
             }.bind(this)));
-
-            var error = new Error("EADDRINUSE, Address already in use");
-            server.emit("error", error);
         },
 
         "binds to specified address": function (done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             helper.run(this, ["-b", "0.0.0.0"], done(function () {
                 assert.calledOnce(createServer);
-                assert.calledWithExactly(createServer, 1111, "0.0.0.0");
+                assert.calledWith(createServer, 1111, "0.0.0.0");
             }));
         },
 
         "binds to undefined when address not specified": function (done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             helper.run(this, [], done(function () {
                 assert.calledOnce(createServer);
-                assert.calledWithExactly(createServer, 1111, undefined);
+                assert.calledWith(createServer, 1111, undefined);
             }));
         },
 
         "calls the function for capturing a headless browser if -c was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
 
             helper.run(this, ["-c"], done(function () {
@@ -106,7 +111,7 @@ buster.testCase("buster-server binary", {
         },
 
         "calls the function for capturing a headless browser if --capture-headless was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
 
             helper.run(this, ["--capture-headless"], done(function () {
@@ -116,7 +121,7 @@ buster.testCase("buster-server binary", {
         },
 
         "creates a phantom session if relevant parameter was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer");
+            var createServer = this.stub(this.cli, "createServer", createServerFunc);
             var createPhantom = this.stub(this.cli.phantom, "create");
 
             helper.run(this, ["-c"], done(function() {

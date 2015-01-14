@@ -1,11 +1,25 @@
 var http = require("http");
 var ramp = require("ramp");
+var buster = require("buster-node");
 
 var helper = module.exports = {
+    // Mostly taken from buster-cli/test/test-helper.js
     run: function (tc, args, callback) {
+        var aso = buster.assert.stdout, rso = buster.refute.stdout;
+
+        buster.refute.stdout = buster.assert.stdout = function (text) {
+            this.match(tc.stdout, text);
+        };
+
+        buster.refute.stderr = buster.assert.stderr = function (text) {
+            this.match(tc.stderr, text);
+        };
+
         tc.cli.run(args, function (err, server) {
             if (server && server.close) { server.close(); }
             callback.call(tc, err, server);
+            buster.assert.stdout = aso;
+            buster.refute.stdout = rso;
         });
     },
 
