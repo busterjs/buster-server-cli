@@ -63,6 +63,11 @@ for a reference implementation.
 
 ##Changelog
 
+**0.3.2** (23.01.2015)
+
+* Fix for issue [#432 - buster-server says "running" even if address is already in use](https://github.com/busterjs/buster/issues/432)
+* PR [`agent.name` could somehow be `null` and will cause `buster-server-cli` to exit](https://github.com/busterjs/buster-server-cli/pull/6)
+
 **0.3.1** (17.09.2014)
 
 * Fix for issue [#416 - buster-server crash with IE 11 on W7 only if there is two browsers captured](https://github.com/busterjs/buster/issues/416)
