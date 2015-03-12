@@ -10,7 +10,7 @@ var assert = buster.assert;
 var refute = buster.refute;
 var serverCli = require("../lib/server-cli");
 var testServer = require("../lib/middleware");
-var createServerFunc = function(port, binding, callback){
+var createServerFunc = function (port, binding, callback) {
     callback(null);
 };
 
@@ -45,7 +45,8 @@ buster.testCase("buster-server binary", {
         },
 
         "starts server on default port": function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
             helper.run(this, [], done(function (err, server) {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 1111);
@@ -53,7 +54,8 @@ buster.testCase("buster-server binary", {
         },
 
         "starts server on specified port": function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
             helper.run(this, ["-p", "3200"], done(function () {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 3200);
@@ -72,7 +74,7 @@ buster.testCase("buster-server binary", {
         "prints message if address is already in use (async)": function (done) {
             var error = new Error("EADDRINUSE, Address already in use");
             var server = bane.createEventEmitter();
-            server.listen = this.spy(function(port, binding, callback){
+            server.listen = this.spy(function (port, binding, callback) {
                 callback(error);
             });
             this.stub(http, "createServer").returns(server);
@@ -85,7 +87,8 @@ buster.testCase("buster-server binary", {
         },
 
         "binds to specified address": function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
             helper.run(this, ["-b", "0.0.0.0"], done(function () {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 1111, "0.0.0.0");
@@ -93,40 +96,74 @@ buster.testCase("buster-server binary", {
         },
 
         "binds to undefined when address not specified": function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
             helper.run(this, [], done(function () {
                 assert.calledOnce(createServer);
                 assert.calledWith(createServer, 1111, undefined);
             }));
         },
 
-        "calls the function for capturing a headless browser if -c was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
-            var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
+        "captures headless browser if -c was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var captureHeadlessBrowser = this.stub(this.cli,
+                    "captureHeadlessBrowser");
 
-            helper.run(this, ["-c"], done(function () {
+                helper.run(this, ["-c"]);
+
                 assert.calledOnce(captureHeadlessBrowser);
-                assert.calledWithExactly(captureHeadlessBrowser, "http://localhost:1111");
-            }));
-        },
+                assert.calledWithExactly(captureHeadlessBrowser,
+                    "http://localhost:1111", buster.sinon.match.func);
+            },
 
-        "calls the function for capturing a headless browser if --capture-headless was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
-            var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
+        "captures headless browser if --capture-headless was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var captureHeadlessBrowser = this.stub(this.cli,
+                    "captureHeadlessBrowser");
 
-            helper.run(this, ["--capture-headless"], done(function () {
+                helper.run(this, ["--capture-headless"]);
+
                 assert.calledOnce(captureHeadlessBrowser);
-                assert.calledWithExactly(captureHeadlessBrowser, "http://localhost:1111");
-            }));
-        },
+                assert.calledWithExactly(captureHeadlessBrowser,
+                    "http://localhost:1111", buster.sinon.match.func);
+            },
 
-        "creates a phantom session if relevant parameter was passed": function(done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
-            var createPhantom = this.stub(this.cli.phantom, "create");
+        "creates phantom session if relevant parameter was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var createPhantom = this.stub(this.cli.phantom, "create");
 
-            helper.run(this, ["-c"], done(function() {
+                helper.run(this, ["-c"]);
+
                 assert.calledOnce(createPhantom);
-            }));
+            },
+
+        "waits until capture page responses": function () {
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
+            var responseCallback;
+            var createPhantom = this.stub(this.cli.phantom, "create",
+                function (cb) {
+                    var proxy = {
+                        page: {
+                            open: function (url, cb) {
+                                responseCallback = cb;
+                            }
+                        }
+                    };
+                    cb(proxy);
+                });
+            var cb = this.stub();
+
+            helper.run(this, ["-c"], cb);
+            refute.called(cb);
+            responseCallback();
+            assert.calledOnce(cb);
         }
     },
 
