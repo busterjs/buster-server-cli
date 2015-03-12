@@ -63,6 +63,10 @@ for a reference implementation.
 
 ##Changelog
 
+**0.3.3** (12.03.2015)
+
+* [Waits now until headless browser is started before calling callback of run. Needed for buster-ci.](https://github.com/busterjs/buster-server-cli/commit/6cf0b3f290)
+
 **0.3.2** (23.01.2015)
 
 * Fix for issue [#432 - buster-server says "running" even if address is already in use](https://github.com/busterjs/buster/issues/432)
