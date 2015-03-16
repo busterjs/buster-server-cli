@@ -61,7 +61,11 @@ the server here to display progress etc.
 See [Buster's header template](https://github.com/busterjs/buster-server-cli/blob/master/views/header.ejs)
 for a reference implementation.
 
-##Changelog
+## Changelog
+
+**0.3.4** (16.03.2015)
+
+* [Additional param `sessionId` for method `captureHeadlessBrowser`.](https://github.com/busterjs/buster-server-cli/commit/dcb4d19)
 
 **0.3.3** (12.03.2015)
 
