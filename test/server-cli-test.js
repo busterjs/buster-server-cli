@@ -244,5 +244,44 @@ buster.testCase("buster-server binary", {
                 });
             }.bind(this));
         }
+    },
+
+    "captureHeadlessBrowser": {
+
+        setUp: function () {
+            this.openStub = this.stub();
+            this.stub(this.cli.phantom, "create",
+                function (cb) {
+                    var proxy = {
+                        page: {
+                            open: this.openStub
+                        }
+                    };
+                    cb(proxy);
+                }.bind(this));
+
+        },
+
+        "ignores missing callback": function () {
+            refute.exception(
+                this.cli.captureHeadlessBrowser.bind(
+                    this.cli, "http://localhost:1111"
+                )
+            );
+        },
+
+        "passes sessionId to capture page": function () {
+
+            this.cli.captureHeadlessBrowser("http://localhost:1111", 0);
+
+            assert.calledOnceWith(this.openStub, "http://localhost:1111/capture?id=0");
+        },
+
+        "doesn't pass sessionId if not defined": function () {
+
+            this.cli.captureHeadlessBrowser("http://localhost:1111", function () {});
+
+            assert.calledOnceWith(this.openStub, "http://localhost:1111/capture");
+        }
     }
 });
