@@ -13,6 +13,7 @@
         "email": "christian@cjohansen.no",
         "url": "http://cjohansen.no"
     }],
+    "license": "BSD-3-Clause",
     "main": "./lib/server-cli",
     "repository": {
         "type": "git",
