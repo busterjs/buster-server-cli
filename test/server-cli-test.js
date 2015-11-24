@@ -178,7 +178,14 @@ buster.testCase("buster-server binary", {
         "serves static pages": function (done) {
             helper.get("/stylesheets/buster.css", done(function (res, body) {
                 assert.equals(res.statusCode, 200);
+                assert.match(res.headers["cache-control"], "max-age=300");
                 assert.match(body, "body {");
+            }));
+        },
+
+        "404 when no such page": function (done) {
+            helper.get("/stylesheets/nope.css", done(function (res) {
+                assert.equals(res.statusCode, 404);
             }));
         },
 
