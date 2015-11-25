@@ -104,51 +104,66 @@ buster.testCase("buster-server binary", {
             }));
         },
 
-        "captures headless browser if -c was passed":  function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
-            var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
-            captureHeadlessBrowser.yields(null);
+        "captures headless browser if -c was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var captureHeadlessBrowser = this.stub(this.cli,
+                    "captureHeadlessBrowser");
 
-            helper.run(this, ["-c"], function () {
+                helper.run(this, ["-c"]);
+
                 assert.calledOnce(captureHeadlessBrowser);
                 assert.calledWithExactly(captureHeadlessBrowser,
                     "http://localhost:1111", buster.sinon.match.func);
-                done();
-            });
-        },
+            },
 
-        "captures headless browser if --capture-headless was passed": function (done) {
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
-            var captureHeadlessBrowser = this.stub(this.cli, "captureHeadlessBrowser");
-            captureHeadlessBrowser.yields(null);
+        "captures headless browser if --capture-headless was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var captureHeadlessBrowser = this.stub(this.cli,
+                    "captureHeadlessBrowser");
 
-            helper.run(this, ["--capture-headless"], function () {
+                helper.run(this, ["--capture-headless"]);
+
                 assert.calledOnce(captureHeadlessBrowser);
                 assert.calledWithExactly(captureHeadlessBrowser,
                     "http://localhost:1111", buster.sinon.match.func);
-                done();
-            });
-        },
+            },
 
-        "waits until capture page responses": function (done) {
-            var runCallback = this.stub();
+        "creates phantom session if relevant parameter was passed":
+            function () {
+                var createServer = this.stub(this.cli, "createServer",
+                    createServerFunc);
+                var createPhantom = this.stub(this.cli.phantom, "create");
 
-            var createServer = this.stub(this.cli, "createServer", createServerFunc);
+                helper.run(this, ["-c"]);
 
-            var proxy = {
-                page: {
-                    open: function (url, cb) {
-                        cb();
-                        assert.calledOnce(runCallback);
-                        done();
-                    }
-                }
-            };
+                assert.calledOnce(createPhantom);
+            },
 
-            this.stub(this.cli.phantom, "create").yields(proxy);
+        "waits until capture page responses": function () {
+            var createServer = this.stub(this.cli, "createServer",
+                createServerFunc);
+            var responseCallback;
+            var createPhantom = this.stub(this.cli.phantom, "create",
+                function (cb) {
+                    var proxy = {
+                        page: {
+                            open: function (url, cb) {
+                                responseCallback = cb;
+                            }
+                        }
+                    };
+                    cb(proxy);
+                });
+            var cb = this.stub();
 
-            helper.run(this, ["-c"], runCallback);
-            refute.called(runCallback);
+            helper.run(this, ["-c"], cb);
+            refute.called(cb);
+            responseCallback();
+            assert.calledOnce(cb);
         }
     },
 
@@ -178,14 +193,7 @@ buster.testCase("buster-server binary", {
         "serves static pages": function (done) {
             helper.get("/stylesheets/buster.css", done(function (res, body) {
                 assert.equals(res.statusCode, 200);
-                assert.match(res.headers["cache-control"], "max-age=300");
                 assert.match(body, "body {");
-            }));
-        },
-
-        "404 when no such page": function (done) {
-            helper.get("/stylesheets/nope.css", done(function (res) {
-                assert.equals(res.statusCode, 404);
             }));
         },
 
