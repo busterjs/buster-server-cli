@@ -1,40 +1,45 @@
 {
-    "name": "buster-server-cli",
-    "version": "0.3.4",
-    "description": "buster-server CLI library",
-    "homepage": "http://busterjs.org/docs/buster-server-cli",
-    "author": { "name": "August Lilleaas and Christian Johansen" },
-    "contributors": [{
-        "name": "August Lilleaas",
-        "email": "august.lilleaas@gmail.com",
-        "url": "http://augustl.com"
-    }, {
-        "name": "Christian Johansen",
-        "email": "christian@cjohansen.no",
-        "url": "http://cjohansen.no"
-    }],
-    "license": "BSD-3-Clause",
-    "main": "./lib/server-cli",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/busterjs/buster-server-cli.git"
+  "name": "buster-server-cli",
+  "version": "0.3.4",
+  "description": "buster-server CLI library",
+  "homepage": "http://busterjs.org/docs/buster-server-cli",
+  "author": {
+    "name": "August Lilleaas and Christian Johansen"
+  },
+  "contributors": [
+    {
+      "name": "August Lilleaas",
+      "email": "august.lilleaas@gmail.com",
+      "url": "http://augustl.com"
     },
-    "scripts": {
-        "test": "node run-tests.js",
-        "test-debug": "node --debug-brk run-tests.js"
-    },
-    "dependencies": {
-        "buster-cli": "~0.6",
-        "ramp": "~1.0",
-        "platform": "~1.2",
-        "ramp-resources": "~1.0",
-        "paperboy": "~0",
-        "ejs": "~0.4",
-        "phantom-proxy": "~0.1.78"
-    },
-    "devDependencies": {
-        "buster-node": "*",
-        "referee": "*",
-        "bane": "~1.0"
+    {
+      "name": "Christian Johansen",
+      "email": "christian@cjohansen.no",
+      "url": "http://cjohansen.no"
     }
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./lib/server-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/busterjs/buster-server-cli.git"
+  },
+  "scripts": {
+    "test": "node run-tests.js",
+    "test-debug": "node --debug-brk run-tests.js"
+  },
+  "dependencies": {
+    "buster-cli": "0.8.x",
+    "ejs": "2.x",
+    "finalhandler": "0.4.x",
+    "phantom-proxy": "0.1.x",
+    "platform": "1.x",
+    "ramp": "2.x",
+    "ramp-resources": "2.x",
+    "serve-static": "1.x"
+  },
+  "devDependencies": {
+    "buster-node": "0.7.x",
+    "bane": "1.x"
+  }
 }
