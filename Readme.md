@@ -63,19 +63,24 @@ for a reference implementation.
 
 ## Changelog
 
-**0.3.4** (16.03.2015)
+**0.4.0** (2015-Nov-28)
+
+* Upgraded all dependencies
+* Replaced `paperboy` with `serve-static` 
+
+**0.3.4** (2015-Mar-16)
 
 * [Additional param `sessionId` for method `captureHeadlessBrowser`.](https://github.com/busterjs/buster-server-cli/commit/dcb4d19)
 
-**0.3.3** (12.03.2015)
+**0.3.3** (2015-Mar-12)
 
 * [Waits now until headless browser is started before calling callback of run. Needed for buster-ci.](https://github.com/busterjs/buster-server-cli/commit/6cf0b3f290)
 
-**0.3.2** (23.01.2015)
+**0.3.2** (2015-Jan-23)
 
 * Fix for issue [#432 - buster-server says "running" even if address is already in use](https://github.com/busterjs/buster/issues/432)
 * PR [`agent.name` could somehow be `null` and will cause `buster-server-cli` to exit](https://github.com/busterjs/buster-server-cli/pull/6)
 
-**0.3.1** (17.09.2014)
+**0.3.1** (2014-Sep-17)
 
 * Fix for issue [#416 - buster-server crash with IE 11 on W7 only if there is two browsers captured](https://github.com/busterjs/buster/issues/416)
